@@ -70,7 +70,7 @@ export function FilterPanel({
     >
       {/* Header */}
       <div className="flex gap-[10px] items-end w-full shrink-0">
-        <div className="flex flex-1 flex-col gap-[12px]">
+        <div className="flex flex-1 flex-col gap-[6px]">
           <div className="flex gap-[6px] items-center">
             {/* Loupe icon */}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
