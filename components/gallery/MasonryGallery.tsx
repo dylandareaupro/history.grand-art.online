@@ -4,6 +4,7 @@ import { ArtworkCard } from './ArtworkCard'
 
 interface MasonryGalleryProps {
   artworks: Artwork[]
+  dimmed?: boolean
 }
 
 // 5 columns — widths in px at 1440px reference, converted to %
@@ -25,7 +26,7 @@ function distributeToColumns(artworks: Artwork[]): Artwork[][] {
   return columns
 }
 
-export function MasonryGallery({ artworks }: MasonryGalleryProps) {
+export function MasonryGallery({ artworks, dimmed = false }: MasonryGalleryProps) {
   const columns = useMemo(() => distributeToColumns(artworks), [artworks])
 
   return (
@@ -42,6 +43,7 @@ export function MasonryGallery({ artworks }: MasonryGalleryProps) {
               artwork={artwork}
               colWidth={col.widthPx}
               priority={rowIndex === 0}
+              dimmed={dimmed}
             />
           ))}
         </div>

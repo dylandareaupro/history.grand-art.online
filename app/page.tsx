@@ -44,7 +44,10 @@ export default function GalleriePage() {
         onToggleTheme={toggleTheme}
         onResetFilter={resetFilter}
       />
-      <MasonryGallery artworks={filteredArtworks} />
+      <MasonryGallery
+        artworks={filteredArtworks}
+        dimmed={!!(filters.artistId || filters.collectionId || filters.themeId)}
+      />
     </main>
   )
 }

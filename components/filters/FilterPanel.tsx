@@ -25,16 +25,20 @@ function ExpandAllIcon({ expanded }: { expanded: boolean }) {
   return (
     <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
       {expanded ? (
-        // Double chevron pointant vers le haut — cliquer pour tout réduire
+        // Quatre flèches vers l'intérieur — cliquer pour tout réduire
         <>
-          <path d="M1 6L5 2L9 6" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M1 9.5L5 5.5L9 9.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1.5 1.5 L4.5 4.5 M4.5 4.5 L4.5 2.5 M4.5 4.5 L2.5 4.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8.5 1.5 L5.5 4.5 M5.5 4.5 L5.5 2.5 M5.5 4.5 L7.5 4.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1.5 8.5 L4.5 5.5 M4.5 5.5 L4.5 7.5 M4.5 5.5 L2.5 5.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8.5 8.5 L5.5 5.5 M5.5 5.5 L5.5 7.5 M5.5 5.5 L7.5 5.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
         </>
       ) : (
-        // Double chevron pointant vers le bas — cliquer pour tout déployer
+        // Quatre flèches vers l'extérieur — cliquer pour tout déployer
         <>
-          <path d="M1 4L5 8L9 4" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M1 0.5L5 4.5L9 0.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M4.5 4.5 L1.5 1.5 M1.5 1.5 L1.5 3.5 M1.5 1.5 L3.5 1.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M5.5 4.5 L8.5 1.5 M8.5 1.5 L8.5 3.5 M8.5 1.5 L6.5 1.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M4.5 5.5 L1.5 8.5 M1.5 8.5 L1.5 6.5 M1.5 8.5 L3.5 8.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M5.5 5.5 L8.5 8.5 M8.5 8.5 L8.5 6.5 M8.5 8.5 L6.5 8.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
         </>
       )}
     </svg>
@@ -62,7 +66,7 @@ export function FilterPanel({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -6, scale: 0.98 }}
       transition={{ duration: 0.15, ease: 'easeOut' }}
-      className="flex flex-col gap-[16px] items-start w-[232px] p-[16px] rounded-[4px] border border-[#dedede] bg-black/35 overflow-hidden"
+      className="flex flex-col gap-[16px] items-start w-[232px] p-[16px] rounded-[4px] border border-[#dedede] bg-black/35 backdrop-blur-md overflow-hidden"
     >
       {/* Header */}
       <div className="flex gap-[10px] items-end w-full shrink-0">

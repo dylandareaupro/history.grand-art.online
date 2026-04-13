@@ -7,9 +7,10 @@ interface ArtworkCardProps {
   artwork: Artwork
   colWidth: number
   priority?: boolean
+  dimmed?: boolean
 }
 
-export const ArtworkCard = memo(function ArtworkCard({ artwork, colWidth, priority = false }: ArtworkCardProps) {
+export const ArtworkCard = memo(function ArtworkCard({ artwork, colWidth, priority = false, dimmed = false }: ArtworkCardProps) {
   return (
     <div className="flex flex-col items-start w-full cursor-pointer group">
       {/* Image */}
@@ -29,7 +30,7 @@ export const ArtworkCard = memo(function ArtworkCard({ artwork, colWidth, priori
         />
       </div>
       {/* Info badge */}
-      <ArtworkBadge artwork={artwork} colWidth={colWidth} />
+      <ArtworkBadge artwork={artwork} colWidth={colWidth} dimmed={dimmed} />
     </div>
   )
 })

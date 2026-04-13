@@ -3,6 +3,7 @@ import type { Artwork } from '@/lib/types'
 interface ArtworkBadgeProps {
   artwork: Artwork
   colWidth: number // px width of the column at 1440px reference
+  dimmed?: boolean
 }
 
 // Title truncation thresholds by column width
@@ -28,20 +29,22 @@ function DateArrow() {
   )
 }
 
-export function ArtworkBadge({ artwork, colWidth }: ArtworkBadgeProps) {
+export function ArtworkBadge({ artwork, colWidth, dimmed = false }: ArtworkBadgeProps) {
   const maxChars = getTitleMaxChars(colWidth)
   const titleTruncated = truncate(artwork.title, maxChars)
+  const textColor = dimmed ? 'text-[#6a6a6a]' : 'text-white'
+  const subTextColor = dimmed ? 'text-[#6a6a6a]' : 'text-[#e5e5e5]'
 
   return (
     <div className="relative w-full bg-[#000510] p-[14px]" style={{ minHeight: '84px' }}>
       <div className="flex flex-col gap-[10px] items-start">
-        <span className="font-korolev-medium text-white text-[16px] uppercase leading-tight">
+        <span className={`font-korolev-medium ${textColor} text-[16px] uppercase leading-tight transition-colors duration-200`}>
           {artwork.artist}
         </span>
-        <span className="font-scala-italic text-[#e5e5e5] text-[16px] leading-[12px]">
+        <span className={`font-scala-italic ${subTextColor} text-[16px] leading-[12px] transition-colors duration-200`}>
           {titleTruncated}
         </span>
-        <span className="font-scala-regular-con text-[#e5e5e5] text-[16px] leading-[12px]">
+        <span className={`font-scala-regular-con ${subTextColor} text-[16px] leading-[12px] transition-colors duration-200`}>
           {artwork.location}{' '}
           <span className="font-scala-caps">| {artwork.city}</span>
         </span>
@@ -50,7 +53,7 @@ export function ArtworkBadge({ artwork, colWidth }: ArtworkBadgeProps) {
       {/* Date — top right */}
       <div className="absolute top-[14px] right-[14px] flex gap-[2px] items-end">
         <DateArrow />
-        <span className="font-scala-regular-con text-[#e5e5e5] text-[17px] leading-[12px] whitespace-nowrap">
+        <span className={`font-scala-regular-con ${subTextColor} text-[17px] leading-[12px] whitespace-nowrap transition-colors duration-200`}>
           {artwork.date}
         </span>
       </div>

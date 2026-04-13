@@ -79,10 +79,10 @@ export function FilterDropdown({
         className="flex h-full items-center gap-[5px] px-[12px] rounded-br-[40px] rounded-tr-[40px]"
         style={{ backgroundColor: activeColor, border: `1px solid ${activeBorder}` }}
       >
-        <CrossIcon />
         <span className="font-korolev-medium text-white text-[14px] whitespace-nowrap">
           {selectedLabel}
         </span>
+        <CrossIcon />
       </div>
     </button>
   )
