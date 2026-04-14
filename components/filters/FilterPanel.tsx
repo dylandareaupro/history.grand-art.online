@@ -21,24 +21,27 @@ interface FilterPanelProps {
   onClose: () => void
 }
 
+// Corner-bracket expand/collapse icon — cleaner at small sizes than diagonal arrows
 function ExpandAllIcon({ expanded }: { expanded: boolean }) {
+  const s = "#4a4a4a"
+  const w = 1.5
   return (
-    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
       {expanded ? (
-        // Quatre flèches vers l'intérieur — cliquer pour tout réduire
+        // Currently all expanded → show compress icon (inner brackets facing outward)
         <>
-          <path d="M1.5 1.5 L4.5 4.5 M4.5 4.5 L4.5 2.5 M4.5 4.5 L2.5 4.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8.5 1.5 L5.5 4.5 M5.5 4.5 L5.5 2.5 M5.5 4.5 L7.5 4.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M1.5 8.5 L4.5 5.5 M4.5 5.5 L4.5 7.5 M4.5 5.5 L2.5 5.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M8.5 8.5 L5.5 5.5 M5.5 5.5 L5.5 7.5 M5.5 5.5 L7.5 5.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1.5 4 L4 4 L4 1.5"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8.5 4 L6 4 L6 1.5"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1.5 6 L4 6 L4 8.5"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M8.5 6 L6 6 L6 8.5"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
         </>
       ) : (
-        // Quatre flèches vers l'extérieur — cliquer pour tout déployer
+        // Currently all collapsed → show expand icon (outer corner brackets)
         <>
-          <path d="M4.5 4.5 L1.5 1.5 M1.5 1.5 L1.5 3.5 M1.5 1.5 L3.5 1.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M5.5 4.5 L8.5 1.5 M8.5 1.5 L8.5 3.5 M8.5 1.5 L6.5 1.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M4.5 5.5 L1.5 8.5 M1.5 8.5 L1.5 6.5 M1.5 8.5 L3.5 8.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M5.5 5.5 L8.5 8.5 M8.5 8.5 L8.5 6.5 M8.5 8.5 L6.5 8.5" stroke="#282828" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 3.5 L1 1 L3.5 1"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9 3.5 L9 1 L6.5 1"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M1 6.5 L1 9 L3.5 9"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M9 6.5 L9 9 L6.5 9"   stroke={s} strokeWidth={w} strokeLinecap="round" strokeLinejoin="round" />
         </>
       )}
     </svg>
@@ -57,8 +60,8 @@ export function FilterPanel({
   onToggleCollection,
   onToggleTheme,
 }: FilterPanelProps) {
-  // Expand-all state for Collections groups
   const [allGroupsExpanded, setAllGroupsExpanded] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
 
   return (
     <motion.div
@@ -73,13 +76,19 @@ export function FilterPanel({
         <div className="flex flex-1 flex-col gap-[6px]">
           <div className="flex gap-[6px] items-center">
             {/* Loupe icon */}
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="shrink-0 pointer-events-none">
               <circle cx="5" cy="5" r="4" stroke="#dedede" strokeWidth="1.2" />
               <line x1="8.5" y1="8.5" x2="11" y2="11" stroke="#dedede" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
-            <span className="font-scala-italic text-[#dedede] text-[16px] whitespace-nowrap">
-              Recherche
-            </span>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Recherche"
+              className="flex-1 min-w-0 bg-transparent border-none outline-none font-scala-italic text-[#dedede] text-[16px] placeholder-[#dedede] placeholder-opacity-100 caret-white"
+              autoComplete="off"
+              spellCheck={false}
+            />
           </div>
           {/* Separator */}
           <div className="w-full h-px bg-[#dedede]/40" />
@@ -103,6 +112,7 @@ export function FilterPanel({
           artists={artists}
           selectedId={selectedArtistId}
           onToggle={onToggleArtist}
+          searchQuery={searchQuery}
         />
       )}
       {type === 'collections' && (
@@ -111,6 +121,7 @@ export function FilterPanel({
           selectedId={selectedCollectionId}
           onToggle={onToggleCollection}
           allGroupsExpanded={allGroupsExpanded}
+          searchQuery={searchQuery}
         />
       )}
       {type === 'themes' && (
@@ -118,6 +129,7 @@ export function FilterPanel({
           themes={themes}
           selectedId={selectedThemeId}
           onToggle={onToggleTheme}
+          searchQuery={searchQuery}
         />
       )}
     </motion.div>

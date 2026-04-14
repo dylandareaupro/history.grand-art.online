@@ -11,21 +11,32 @@ interface CollectionsPanelProps {
   selectedId: string | null
   onToggle: (id: string) => void
   allGroupsExpanded: boolean
+  searchQuery?: string
 }
 
 function CollectionGroup({
   collection,
   expanded,
-  selectedId,
+  selectedMuseumId,
   onToggle,
   onToggleExpanded,
+  searchQuery,
 }: {
   collection: Collection
   expanded: boolean
-  selectedId: string | null
+  selectedMuseumId: string | null
   onToggle: (id: string) => void
   onToggleExpanded: () => void
+  searchQuery: string
 }) {
+  const q = searchQuery.toLowerCase()
+  const visibleMuseums = q
+    ? collection.museums.filter((m) => m.name.toLowerCase().includes(q))
+    : collection.museums
+
+  // When searching, always show sub-items even if group is collapsed
+  const showMuseums = expanded || q.length > 0
+
   return (
     <div className="flex flex-col gap-[12px] w-full">
       {/* Country row */}
@@ -36,7 +47,6 @@ function CollectionGroup({
           style={{ width: 13, height: 13 }}
           aria-label={expanded ? 'Réduire' : 'Développer'}
         >
-          {/* Chevron 13×8 — points down when expanded, right when collapsed */}
           <svg
             width="13"
             height="8"
@@ -56,24 +66,24 @@ function CollectionGroup({
         <CheckboxItem
           label={collection.country}
           count={collection.count}
-          checked={selectedId === collection.id}
+          checked={false}
           color="teal"
-          onToggle={() => onToggle(collection.id)}
+          onToggle={onToggleExpanded}
         />
       </div>
 
       {/* Museum sub-items */}
-      {expanded && (
+      {showMuseums && visibleMuseums.length > 0 && (
         <div className="flex flex-col gap-[8px] pl-[30px]">
-          {collection.museums.map((museum) => (
+          {visibleMuseums.map((museum) => (
             <CheckboxItem
               key={museum.id}
               label={museum.name}
               count={museum.count}
-              checked={false}
+              checked={selectedMuseumId === museum.id}
               color="teal"
               size="sm"
-              onToggle={() => {}}
+              onToggle={() => onToggle(museum.id)}
             />
           ))}
         </div>
@@ -82,15 +92,13 @@ function CollectionGroup({
   )
 }
 
-export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsExpanded }: CollectionsPanelProps) {
+export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsExpanded, searchQuery = '' }: CollectionsPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Map of collectionId → expanded state
   const [expandedMap, setExpandedMap] = useState<Record<string, boolean>>(() =>
     Object.fromEntries(collections.map((c) => [c.id, true]))
   )
 
-  // Sync when parent triggers expand/collapse all
   const prevAllGroupsExpanded = useRef(allGroupsExpanded)
   useEffect(() => {
     if (allGroupsExpanded !== prevAllGroupsExpanded.current) {
@@ -103,6 +111,16 @@ export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsE
     setExpandedMap((prev) => ({ ...prev, [id]: !prev[id] }))
   }
 
+  // When searching, show all collections that have at least one matching museum
+  const q = searchQuery.toLowerCase()
+  const visibleCollections = q
+    ? collections.filter(
+        (col) =>
+          col.country.toLowerCase().includes(q) ||
+          col.museums.some((m) => m.name.toLowerCase().includes(q))
+      )
+    : collections
+
   return (
     <div className="flex gap-[16px] items-start w-full">
       <div
@@ -110,16 +128,20 @@ export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsE
         className="flex flex-col gap-[12px] items-start flex-1 min-w-0 overflow-y-auto"
         style={{ maxHeight: '267px', scrollbarWidth: 'none' }}
       >
-        {collections.map((col) => (
+        {visibleCollections.map((col) => (
           <CollectionGroup
             key={col.id}
             collection={col}
             expanded={expandedMap[col.id] ?? true}
-            selectedId={selectedId}
+            selectedMuseumId={selectedId}
             onToggle={onToggle}
             onToggleExpanded={() => toggleGroup(col.id)}
+            searchQuery={searchQuery}
           />
         ))}
+        {visibleCollections.length === 0 && (
+          <p className="font-scala-italic text-[#dedede]/60 text-[13px]">Aucun résultat</p>
+        )}
       </div>
       <PanelScrollBar color="teal" containerRef={containerRef} />
     </div>

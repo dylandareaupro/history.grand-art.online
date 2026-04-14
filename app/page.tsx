@@ -13,7 +13,7 @@ export default function GalleriePage() {
     availableCollections,
     availableThemes,
     selectedArtist,
-    selectedCollection,
+    selectedMuseum,
     selectedTheme,
     toggleArtist,
     toggleCollection,
@@ -35,7 +35,7 @@ export default function GalleriePage() {
         selectedCollectionId={filters.collectionId}
         selectedThemeId={filters.themeId}
         selectedArtistLabel={selectedArtist?.name ?? null}
-        selectedCollectionLabel={selectedCollection?.country ?? null}
+        selectedCollectionLabel={selectedMuseum?.name ?? null}
         selectedThemeLabel={selectedTheme?.name ?? null}
         onTogglePanel={togglePanel}
         onCloseAllPanels={closeAllPanels}
