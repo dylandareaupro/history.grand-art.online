@@ -23,7 +23,7 @@ function truncate(str: string, max: number): string {
 // Triangle arrow icon (rotated 90°)
 function DateArrow() {
   return (
-    <svg width="8" height="8" viewBox="0 0 8 8" fill="white" className="rotate-90 shrink-0">
+    <svg width="8" height="8" viewBox="0 0 8 8" fill="#6a6a6a" className="rotate-90 shrink-0">
       <polygon points="4,0 8,8 0,8" />
     </svg>
   )
