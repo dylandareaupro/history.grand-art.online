@@ -58,32 +58,32 @@ export function FilterDropdown({
     )
   }
 
-  // Active state (filter selected) — pill-shaped right side, cross icon, no chevron
+  // Active state (filter selected) — left label opens panel, right cross resets
   return (
-    <button
-      onClick={onReset}
-      className="flex h-[42px] items-start gap-px"
-      title={`Retirer le filtre ${displayLabel}`}
-    >
-      {/* Left: label tab */}
-      <div
+    <div className="flex h-[42px] items-start gap-px">
+      {/* Left: label tab — opens the panel */}
+      <button
+        onClick={onToggle}
         className="flex h-full items-center px-[15px] rounded-bl-[4px] rounded-tl-[4px]"
         style={{ backgroundColor: activeColor, border: `1px solid ${activeBorder}` }}
+        aria-expanded={isOpen}
       >
         <span className="font-korolev-medium text-white text-[16px] uppercase whitespace-nowrap">
           {displayLabel}
         </span>
-      </div>
-      {/* Right: pill-shaped tab with cross + selected value */}
-      <div
+      </button>
+      {/* Right: pill-shaped tab — only this resets the filter */}
+      <button
+        onClick={onReset}
         className="flex h-full items-center gap-[5px] px-[12px] rounded-br-[40px] rounded-tr-[40px]"
         style={{ backgroundColor: activeColor, border: `1px solid ${activeBorder}` }}
+        title={`Retirer le filtre ${displayLabel}`}
       >
         <span className="font-korolev-medium text-white text-[14px] whitespace-nowrap">
           {selectedLabel}
         </span>
         <CrossIcon />
-      </div>
-    </button>
+      </button>
+    </div>
   )
 }
