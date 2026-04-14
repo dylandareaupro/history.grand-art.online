@@ -47,7 +47,7 @@ export default function GalleriePage() {
       />
       <MasonryGallery
         artworks={filteredArtworks}
-        dimmed={!!(filters.artistId || filters.collectionId || filters.themeId)}
+        dimmed={openPanels.length > 0}
       />
     </main>
   )
