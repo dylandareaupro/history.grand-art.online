@@ -111,9 +111,9 @@ export function Header({
                   activeColor={FILTER_COLORS[type].bg}
                   activeBorder={FILTER_COLORS[type].border}
                 />
-                <AnimatePresence>
+                <AnimatePresence mode="wait">
                   {openPanels.includes(type) && (
-                    <div className="absolute top-[calc(100%+8px)] left-0 z-50">
+                    <div key={type} className="absolute top-[calc(100%+8px)] left-0 z-50">
                       <FilterPanel
                         type={type}
                         artists={artists}

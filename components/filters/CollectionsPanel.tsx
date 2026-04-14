@@ -99,12 +99,8 @@ export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsE
     Object.fromEntries(collections.map((c) => [c.id, true]))
   )
 
-  const prevAllGroupsExpanded = useRef(allGroupsExpanded)
   useEffect(() => {
-    if (allGroupsExpanded !== prevAllGroupsExpanded.current) {
-      prevAllGroupsExpanded.current = allGroupsExpanded
-      setExpandedMap(Object.fromEntries(collections.map((c) => [c.id, allGroupsExpanded])))
-    }
+    setExpandedMap(Object.fromEntries(collections.map((c) => [c.id, allGroupsExpanded])))
   }, [allGroupsExpanded, collections])
 
   function toggleGroup(id: string) {
