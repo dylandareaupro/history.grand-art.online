@@ -19,12 +19,12 @@ export function getFilteredArtworks(artworks: Artwork[], filters: FilterState): 
     if (filters.collectionId) {
       const parentCollection = collections.find((c) => c.id === filters.collectionId)
       if (parentCollection) {
-        // Country-level filter: match any museum in that country
-        const museumIds = new Set(parentCollection.museums.map((m) => m.id))
-        if (!museumIds.has(artwork.collectionId)) return false
-      } else {
-        // Museum-level filter: exact match
+        // Country-level: artwork.collectionId stores the country ID
         if (artwork.collectionId !== filters.collectionId) return false
+      } else {
+        // Museum-level: artwork.location matches museum.name (artwork.collectionId is the country ID)
+        const museum = collections.flatMap((c) => c.museums).find((m) => m.id === filters.collectionId)
+        if (!museum || artwork.location !== museum.name) return false
       }
     }
     if (filters.themeId && !artwork.themeIds.includes(filters.themeId)) {
