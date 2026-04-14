@@ -16,8 +16,16 @@ export function getFilteredArtworks(artworks: Artwork[], filters: FilterState): 
       const artist = artists.find((a) => a.id === filters.artistId)
       if (!artist || normalize(artwork.artist) !== normalize(artist.name)) return false
     }
-    if (filters.collectionId && artwork.collectionId !== filters.collectionId) {
-      return false
+    if (filters.collectionId) {
+      const parentCollection = collections.find((c) => c.id === filters.collectionId)
+      if (parentCollection) {
+        // Country-level filter: match any museum in that country
+        const museumIds = new Set(parentCollection.museums.map((m) => m.id))
+        if (!museumIds.has(artwork.collectionId)) return false
+      } else {
+        // Museum-level filter: exact match
+        if (artwork.collectionId !== filters.collectionId) return false
+      }
     }
     if (filters.themeId && !artwork.themeIds.includes(filters.themeId)) {
       return false

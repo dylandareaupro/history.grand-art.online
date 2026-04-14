@@ -68,9 +68,11 @@ export function useFilters() {
   }
 
   const selectedArtist = availableArtists.find((a) => a.id === filters.artistId) ?? null
-  // collectionId stores a museum ID — find the parent Collection and the Museum itself
+  // collectionId can be a country ID or a museum ID
   const selectedCollection = filters.collectionId
-    ? (availableCollections.find((c) => c.museums.some((m) => m.id === filters.collectionId)) ?? null)
+    ? (availableCollections.find(
+        (c) => c.id === filters.collectionId || c.museums.some((m) => m.id === filters.collectionId)
+      ) ?? null)
     : null
   const selectedMuseum = selectedCollection?.museums.find((m) => m.id === filters.collectionId) ?? null
   const selectedTheme = availableThemes.find((t) => t.id === filters.themeId) ?? null

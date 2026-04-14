@@ -17,14 +17,14 @@ interface CollectionsPanelProps {
 function CollectionGroup({
   collection,
   expanded,
-  selectedMuseumId,
+  selectedId,
   onToggle,
   onToggleExpanded,
   searchQuery,
 }: {
   collection: Collection
   expanded: boolean
-  selectedMuseumId: string | null
+  selectedId: string | null
   onToggle: (id: string) => void
   onToggleExpanded: () => void
   searchQuery: string
@@ -66,9 +66,9 @@ function CollectionGroup({
         <CheckboxItem
           label={collection.country}
           count={collection.count}
-          checked={false}
+          checked={selectedId === collection.id}
           color="teal"
-          onToggle={onToggleExpanded}
+          onToggle={() => onToggle(collection.id)}
         />
       </div>
 
@@ -80,7 +80,7 @@ function CollectionGroup({
               key={museum.id}
               label={museum.name}
               count={museum.count}
-              checked={selectedMuseumId === museum.id}
+              checked={selectedId === museum.id}
               color="teal"
               size="sm"
               onToggle={() => onToggle(museum.id)}
@@ -133,7 +133,7 @@ export function CollectionsPanel({ collections, selectedId, onToggle, allGroupsE
             key={col.id}
             collection={col}
             expanded={expandedMap[col.id] ?? true}
-            selectedMuseumId={selectedId}
+            selectedId={selectedId}
             onToggle={onToggle}
             onToggleExpanded={() => toggleGroup(col.id)}
             searchQuery={searchQuery}
